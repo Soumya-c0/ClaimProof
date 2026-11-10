@@ -1,0 +1,29 @@
+# Security / Secrets
+.env
+*.pem
+*.key
+
+# Python Virtual Environments
+venv/
+.venv/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases & Logs
+*.sqlite3
+*.db
+*.log
+ollama.log
+
+# Frontend / React (for our next phases)
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+.env.local
+
+# OS Files
+.DS_Store
