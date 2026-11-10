@@ -57,13 +57,13 @@ def execute_claim(policy: CompiledPolicy, claim: ClaimFacts) -> DecisionReport:
             payout = 0.0
             break 
             
-        if rule.rule_type in ["condition", "exclusion"] and rule_status == "FAIL":
+        if rule_status == "FAIL":
             final_status = "REJECTED"
-            rejection_reason = f"Waiting period or exclusion violated ({rule.rule_id})"
+            rejection_reason = f"Policy requirement not met: {failure_reason}"
             payout = 0.0
 
         # 4. Apply Financial Mathematics (only if no failure yet)
-        if final_status == "APPROVED" and rule.rule_type == "coverage" and rule_status == "PASS":
+        if final_status == "APPROVED" and rule_status == "PASS":
             if rule.deductible:
                 payout = max(0.0, payout - rule.deductible)
             if rule.coverage_limit:
