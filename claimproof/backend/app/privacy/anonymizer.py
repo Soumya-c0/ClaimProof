@@ -1,28 +1,51 @@
+from typing import Dict, Tuple
 from presidio_analyzer import AnalyzerEngine
-from presidio_anonymizer import AnonymizerEngine
-from app.privacy.vault import vault
 
-# Initialize Presidio engines
+ENTITY_PREFIX = {
+    "PERSON": "PERSON",
+    "PHONE_NUMBER": "PHONE",
+    "DATE_TIME": "DATE",
+    "LOCATION": "ADDRESS",
+    "IN_PAN": "ID",
+    "US_SSN": "ID",
+    "CREDIT_CARD": "ID",
+}
+
 analyzer = AnalyzerEngine()
-anonymizer = AnonymizerEngine()
 
-def protect_text(text: str) -> str:
-    """Detects PII and replaces it with tokens from the local vault."""
-    if not text:
-        return ""
 
-    # Detect entities (Names, Phones, Emails, Locations, etc.)
-    results = analyzer.analyze(text=text, entities=[], language='en')
+def anonymize_text(text: str) -> Tuple[str, Dict[str, str], Dict[str, str]]:
+    """
+    Detects PII with Microsoft Presidio and replaces it with indexed tokens.
+    Only the tokenized text is passed downstream to any LLM.
+    """
+    results = analyzer.analyze(
+        text=text,
+        entities=list(ENTITY_PREFIX.keys()),
+        language="en",
+    )
+
     
-    # Sort results in reverse order to avoid index shifting during replacement
-    results = sorted(results, key=lambda x: x.start, reverse=True)
-    
-    protected_text = text
-    for result in results:
-        raw_entity = text[result.start:result.end]
-        token = vault.get_or_create_token(result.entity_type, raw_entity)
-        
-        # Replace the raw text with the token
-        protected_text = protected_text[:result.start] + token + protected_text[result.end:]
-        
-    return protected_text
+    results = sorted(results, key=lambda r: r.start, reverse=True)
+
+    counts: Dict[str, int] = {}
+    token_map: Dict[str, str] = {}
+    tokenized_text = text
+
+    for res in results:
+        prefix = ENTITY_PREFIX.get(res.entity_type, "PII")
+        counts[prefix] = counts.get(prefix, 0) + 1
+        token = f"{prefix}_{counts[prefix]}"
+        original_val = text[res.start:res.end]
+
+        token_map[token] = original_val
+        tokenized_text = tokenized_text[:res.start] + token + tokenized_text[res.end:]
+
+    privacy_check = {
+        "names": "tokenised",
+        "phone_numbers": "tokenised",
+        "addresses": "tokenised",
+        "id_numbers": "tokenised",
+    }
+
+    return tokenized_text, token_map, privacy_check

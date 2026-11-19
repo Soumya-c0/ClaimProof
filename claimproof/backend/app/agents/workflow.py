@@ -1,95 +1,130 @@
-import os
-import json
-import re
-from litellm import completion
-from langgraph.graph import StateGraph, END
+import litellm
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
 from app.agents.state import ClaimState
+from app.engine.evaluator import calculate_settlement, evaluate_rules
+from app.services.counterfactual import run_counterfactual
+from app.services.audit import record_audit_entry
 
-DEFAULT_MODEL = os.getenv("COMPILER_MODEL", "ollama/llama3.2")
-
-def clean_json_response(raw_string: str) -> dict:
-    """Helper to strip markdown formatting if the local LLM wraps the JSON."""
-    match = re.search(r'\{.*\}', raw_string, re.DOTALL)
-    if match:
-        return json.loads(match.group(0))
-    return json.loads(raw_string)
-
-def advocate_node(state: ClaimState) -> dict:
-    prompt = f"""
-    Policy: {state['policy'].model_dump_json()}
-    Claim: {state['claim'].model_dump_json()}
-    Ambiguity: {state['ambiguous_reason']}
-    
-    You are the Advocate. Based strictly on the policy text, argue why this claim SHOULD be approved despite the ambiguity. Be concise.
-    """
-    resp = completion(model=DEFAULT_MODEL, messages=[{"role": "user", "content": prompt}], temperature=0.4)
-    return {"advocate_argument": resp.choices[0].message.content}
-
-def challenger_node(state: ClaimState) -> dict:
-    prompt = f"""
-    Policy: {state['policy'].model_dump_json()}
-    Claim: {state['claim'].model_dump_json()}
-    Ambiguity: {state['ambiguous_reason']}
-    Advocate says: {state['advocate_argument']}
-    
-    You are the Challenger. Argue why this claim should be REJECTED based on exclusions, missing information, or invalid assumptions. Be concise.
-    """
-    resp = completion(model=DEFAULT_MODEL, messages=[{"role": "user", "content": prompt}], temperature=0.4)
-    return {"challenger_argument": resp.choices[0].message.content}
-
-def judge_node(state: ClaimState) -> dict:
-    prompt = f"""
-    Policy: {state['policy'].model_dump_json()}
-    Claim: {state['claim'].model_dump_json()}
-    Advocate: {state['advocate_argument']}
-    Challenger: {state['challenger_argument']}
-    
-    You are the Judge. Evaluate the arguments against the original policy.
-    Output STRICTLY in JSON format with no markdown blocks.
-    Keys required: 
-    "decision" (Must be exactly "APPROVED", "REJECTED", or "ESCALATED"),
-    "reason" (A concise string explaining the ruling),
-    "confidence" (A float between 0.0 and 1.0)
-    """
-    
-    resp = completion(
-        model=DEFAULT_MODEL, 
-        messages=[{"role": "user", "content": prompt}],
+def _ask_llm(role_prompt: str, context: str) -> str:
+    resp = litellm.completion(
+        model="ollama/llama3",
+        api_base="http://localhost:11434",
         temperature=0.0,
-        response_format={"type": "json_object"}
+        messages=[
+            {"role": "system", "content": role_prompt},
+            {"role": "user", "content": context},
+        ],
     )
-    
-    try:
-        result = clean_json_response(resp.choices[0].message.content)
-        final_decision = result.get("decision", "ESCALATED")
-        confidence = float(result.get("confidence", 0.0))
-        
-        # If the LLM isn't confident, force human escalation
-        if confidence < 0.80:
-            final_decision = "ESCALATED"
-            
-        return {
-            "judge_decision": result.get("reason", "Could not determine reason."),
-            "final_status": final_decision,
-            "confidence_score": confidence
-        }
-    except Exception as e:
-        return {
-            "judge_decision": f"Parsing failed: {str(e)}",
-            "final_status": "ESCALATED",
-            "confidence_score": 0.0
-        }
+    return resp.choices[0].message.content
 
-# Compile the Graph
-workflow = StateGraph(ClaimState)
 
-workflow.add_node("advocate", advocate_node)
-workflow.add_node("challenger", challenger_node)
-workflow.add_node("judge", judge_node)
+def evaluate_node(state: ClaimState) -> ClaimState:
+    verdict, results, is_ambiguous = evaluate_rules(state["facts"], state["rules"])
+    return {
+        "verdict": verdict,
+        "rule_results": [r.model_dump() for r in results],
+        "is_ambiguous": is_ambiguous,
+        "agents_triggered": False,
+        "confidence": 1.0 if not is_ambiguous else 0.5,
+    }
 
-workflow.set_entry_point("advocate")
-workflow.add_edge("advocate", "challenger")
-workflow.add_edge("challenger", "judge")
-workflow.add_edge("judge", END)
 
-claim_agent_graph = workflow.compile()
+def route_after_evaluate(state: ClaimState) -> str:
+    return "advocate" if state.get("is_ambiguous") else "settle"
+
+
+def advocate_node(state: ClaimState) -> ClaimState:
+    arg = _ask_llm(
+        "You are the Advocate agent. Argue why this ambiguous insurance claim should be APPROVED.",
+        str(state["rule_results"]),
+    )
+    args = dict(state.get("arguments", {}))
+    args["advocate"] = arg
+    return {"arguments": args, "agents_triggered": True}
+
+
+def challenger_node(state: ClaimState) -> ClaimState:
+    arg = _ask_llm(
+        "You are the Challenger agent. Argue why this ambiguous insurance claim should be REJECTED.",
+        str(state["rule_results"]),
+    )
+    args = dict(state.get("arguments", {}))
+    args["challenger"] = arg
+    return {"arguments": args, "agents_triggered": True}
+
+
+def judge_node(state: ClaimState) -> ClaimState:
+    decision = _ask_llm(
+        "You are the Judge. Weigh Advocate vs Challenger against policy clauses. Reply APPROVED, REJECTED, or ESCALATE.",
+        str(state.get("arguments", {})),
+    )
+    verdict = "APPROVED" if "APPROVED" in decision.upper() else "REJECTED"
+    confidence = 0.4 if "ESCALATE" in decision.upper() else 0.85
+    return {"verdict": verdict, "confidence": confidence}
+
+
+def route_after_judge(state: ClaimState) -> str:
+    return "human_review" if state.get("confidence", 1.0) < 0.7 else "settle"
+
+
+def human_review_node(state: ClaimState) -> ClaimState:
+    return {"verdict": "HUMAN_REVIEW"}
+
+
+def settle_node(state: ClaimState) -> ClaimState:
+    amount = float(state["facts"].get("claim_amount", 0.0))
+    settlement = calculate_settlement(amount, state["verdict"])
+    return {"settlement": settlement.model_dump()}
+
+
+def counterfactual_node(state: ClaimState) -> ClaimState:
+    from app.engine.schema import RuleEvalResult
+
+    parsed_results = [RuleEvalResult(**r) for r in state["rule_results"]]
+    cf = run_counterfactual(state["facts"], state["rules"], parsed_results, state["verdict"])
+    return {"counterfactual": cf.model_dump() if cf else None}
+
+def audit_node(state: ClaimState) -> ClaimState:
+    rule_results = state.get("rule_results", [])
+    rule_ids = [r["rule_id"] for r in rule_results]
+    clauses = [r["clause"] for r in rule_results]
+
+    entry = record_audit_entry(
+        claim_id=state["claim_id"],
+        policy_version=state.get("policy_version", "v3"),
+        claim_facts=state.get("facts", {}),
+        verdict=state.get("verdict", "REJECTED"),
+        rule_ids=rule_ids,
+        clauses=clauses,
+        confidence=state.get("confidence", 1.0),
+    )
+    return {"audit_hash": entry["hash"]}
+
+
+def build_claim_graph():
+    graph = StateGraph(ClaimState)
+
+    graph.add_node("evaluate", evaluate_node)
+    graph.add_node("advocate", advocate_node)
+    graph.add_node("challenger", challenger_node)
+    graph.add_node("judge", judge_node)
+    graph.add_node("human_review", human_review_node)
+    graph.add_node("settle", settle_node)
+    graph.add_node("counterfactual", counterfactual_node)
+
+    graph.add_edge(START, "evaluate")
+    graph.add_conditional_edges("evaluate", route_after_evaluate, {"advocate": "advocate", "settle": "settle"})
+    graph.add_edge("advocate", "challenger")
+    graph.add_edge("challenger", "judge")
+    graph.add_conditional_edges("judge", route_after_judge, {"human_review": "human_review", "settle": "settle"})
+    graph.add_edge("human_review", "settle")
+    graph.add_edge("settle", "counterfactual")
+    graph.add_node("audit", audit_node)
+    graph.add_edge("counterfactual", "audit")
+    graph.add_edge("audit", END)
+
+    return graph.compile(checkpointer=MemorySaver())
+
+
+claim_workflow = build_claim_graph()

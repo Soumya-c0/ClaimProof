@@ -1,30 +1,29 @@
-import os
-from litellm import completion
-from app.compiler.schema import CompiledPolicy
+import json
+from typing import List
+import litellm
+from app.compiler.schema import PolicyRule
 
-# Switch to the local Ollama instance
-DEFAULT_MODEL = os.getenv("COMPILER_MODEL", "ollama/llama3.2")
+SYSTEM_PROMPT = """
+You are an insurance policy compiler. Convert tokenized policy clauses into a JSON list of rules.
+Each rule must have: rule_id, description, field, operator, value, source_clause, rule_type, linked_rules.
+Keep coverage clauses (e.g., flood damage) and waiting periods (e.g., 30 days) as SEPARATE linked rules.
+Return ONLY valid JSON.
+"""
 
-def compile_policy_text(policy_text: str) -> CompiledPolicy:
-    """Uses a local LLM to convert raw policy text into deterministic Pydantic rules."""
-    
-    system_prompt = """
-    You are an expert insurance policy compiler. 
-    Convert the following policy clauses into strict, executable structured rules in JSON format.
-    Extract coverages, waiting periods, limits, and deductibles accurately.
-    Use clear variable names for 'field' (e.g., 'days_since_start', 'loss_type').
-    """
 
-    response = completion(
-        model=DEFAULT_MODEL,
+def extract_rules(tokenized_policy_text: str, model: str = "ollama/llama3") -> List[PolicyRule]:
+    response = litellm.completion(
+        model=model,
         messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": policy_text}
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": tokenized_policy_text},
         ],
-        response_format=CompiledPolicy, # Forces JSON schema adherence locally
-        temperature=0.0, # Deterministic extraction
-        # liteLLM automatically routes to http://localhost:11434 for ollama/ prefixes
+        api_base="http://localhost:11434",
+        temperature=0.0,
     )
-    
-    # Parse the structured JSON back into our Pydantic model
-    return CompiledPolicy.model_validate_json(response.choices[0].message.content)
+
+    raw_json = response.choices[0].message.content
+    raw_rules = json.loads(raw_json)
+
+    validated_rules = [PolicyRule(**rule) for rule in raw_rules]
+    return validated_rules

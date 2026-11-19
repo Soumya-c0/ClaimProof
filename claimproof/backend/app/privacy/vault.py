@@ -1,33 +1,38 @@
-import uuid
+import json
+from pathlib import Path
 from typing import Dict
 
-class TokenVault:
-    def __init__(self):
-        # In-memory vault for the hackathon MVP. 
-        # For production, this maps to an encrypted PostgreSQL table.
-        self.token_to_raw: Dict[str, str] = {}
-        self.raw_to_token: Dict[str, str] = {}
-        self.counters: Dict[str, int] = {}
+VAULT_PATH = Path("local_token_vault.json")
 
-    def get_or_create_token(self, entity_type: str, raw_text: str) -> str:
-        if raw_text in self.raw_to_token:
-            return self.raw_to_token[raw_text]
-        
-        count = self.counters.get(entity_type, 0) + 1
-        self.counters[entity_type] = count
-        
-        token = f"[{entity_type}_{count}]"
-        
-        self.token_to_raw[token] = raw_text
-        self.raw_to_token[raw_text] = token
-        
-        return token
 
-    def restore(self, text: str) -> str:
-        restored_text = text
-        for token, raw in self.token_to_raw.items():
-            restored_text = restored_text.replace(token, raw)
-        return restored_text
+class LocalTokenVault:
+    """Stores PII token mappings locally. Never transmitted to external LLMs."""
 
-# Singleton instance for the app
-vault = TokenVault()
+    def __init__(self, path: Path = VAULT_PATH):
+        self.path = path
+        self._store: Dict[str, Dict[str, str]] = self._load()
+
+    def _load(self) -> Dict[str, Dict[str, str]]:
+        if self.path.exists():
+            return json.loads(self.path.read_text(encoding="utf-8"))
+        return {}
+
+    def _save(self) -> None:
+        self.path.write_text(json.dumps(self._store, indent=2), encoding="utf-8")
+
+    def save_map(self, doc_id: str, token_map: Dict[str, str]) -> None:
+        self._store[doc_id] = token_map
+        self._save()
+
+    def get_map(self, doc_id: str) -> Dict[str, str]:
+        return self._store.get(doc_id, {})
+
+    def detokenize(self, doc_id: str, text: str) -> str:
+        """Restores raw identifiers locally after the model call."""
+        token_map = self.get_map(doc_id)
+        for token, original in token_map.items():
+            text = text.replace(token, original)
+        return text
+
+
+vault = LocalTokenVault()

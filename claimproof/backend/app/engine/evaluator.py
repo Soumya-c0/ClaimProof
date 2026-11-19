@@ -1,77 +1,87 @@
-from app.compiler.schema import CompiledPolicy, Condition
-from app.engine.schema import ClaimFacts, RuleEvaluation, DecisionReport
+import operator
+from typing import Any, Dict, List, Tuple
+from app.compiler.schema import PolicyRule
+from app.engine.schema import RuleEvalResult, SettlementResult
 
-def evaluate_condition(condition: Condition, facts: dict) -> bool:
-    """Safely executes the mathematical operator against the claim facts."""
-    if condition.field not in facts:
-        raise ValueError(f"Missing required claim fact: {condition.field}")
+OPS = {
+    "==": operator.eq,
+    "!=": operator.ne,
+    ">": operator.gt,
+    ">=": operator.ge,
+    "<": operator.lt,
+    "<=": operator.le,
+    "in": lambda a, b: a in b,
+    "not_in": lambda a, b: a not in b,
+}
 
-    fact_val = facts[condition.field]
-    cond_val = condition.value
 
-    # Deterministic evaluation matrix
-    if condition.operator == "==": return fact_val == cond_val
-    if condition.operator == "!=": return fact_val != cond_val
-    if condition.operator == ">": return fact_val > cond_val
-    if condition.operator == ">=": return fact_val >= cond_val
-    if condition.operator == "<": return fact_val < cond_val
-    if condition.operator == "<=": return fact_val <= cond_val
-    if condition.operator == "in": return fact_val in cond_val
+def evaluate_rules(facts: Dict[str, Any], rules: List[PolicyRule]) -> Tuple[str, List[RuleEvalResult], bool]:
+    results: List[RuleEvalResult] = []
+    has_ambiguity = False
+    has_failure = False
 
-    raise ValueError(f"Unknown operator: {condition.operator}")
+    for rule in rules:
+        if rule.field not in facts or facts[rule.field] is None:
+            has_ambiguity = True
+            results.append(
+                RuleEvalResult(
+                    rule_id=rule.rule_id,
+                    clause=rule.source_clause,
+                    status="ambiguous",
+                    reason=f"Missing fact '{rule.field}' (cl. {rule.source_clause})",
+                    field=rule.field,
+                    expected=rule.value,
+                )
+            )
+            continue
 
-def execute_claim(policy: CompiledPolicy, claim: ClaimFacts) -> DecisionReport:
-    evaluations = []
-    final_status = "APPROVED"
-    rejection_reason = "All policy conditions met."
-    payout = claim.claimed_amount
+        actual = facts[rule.field]
+        passed = OPS[rule.operator](actual, rule.value)
 
-    for rule in policy.rules:
-        rule_status = "PASS"
-        failure_reason = ""
+        if passed:
+            status = "pass"
+            reason = f"{rule.description} satisfied (cl. {rule.source_clause})"
+        else:
+            status = "fail"
+            has_failure = True
+            reason = f"Got {actual}, needs {rule.operator} {rule.value} (cl. {rule.source_clause})"
 
-        # 1. Evaluate all conditions tied to this rule
-        for cond in rule.conditions:
-            try:
-                passed = evaluate_condition(cond, claim.facts)
-                if not passed:
-                    rule_status = "FAIL"
-                    failure_reason = f"Actual '{cond.field}' ({claim.facts.get(cond.field)}) failed requirement: {cond.operator} {cond.value}"
-                    break
-            except ValueError as e:
-                rule_status = "AMBIGUOUS"
-                failure_reason = str(e)
-                break
+        results.append(
+            RuleEvalResult(
+                rule_id=rule.rule_id,
+                clause=rule.source_clause,
+                status=status,
+                reason=reason,
+                field=rule.field,
+                expected=rule.value,
+            )
+        )
 
-        # 2. Record the trace
-        evaluations.append(RuleEvaluation(
-            rule_id=rule.rule_id,
-            status=rule_status,
-            reason=failure_reason if rule_status != "PASS" else rule.description
-        ))
+    if has_ambiguity:
+        verdict = "AMBIGUOUS"
+    elif has_failure:
+        verdict = "REJECTED"
+    else:
+        verdict = "APPROVED"
 
-        # 3. Apply Decision Logic
-        if rule_status == "AMBIGUOUS":
-            final_status = "ESCALATED"
-            rejection_reason = f"Agent verification required due to missing fact: {failure_reason}"
-            payout = 0.0
-            break 
-            
-        if rule_status == "FAIL":
-            final_status = "REJECTED"
-            rejection_reason = f"Policy requirement not met: {failure_reason}"
-            payout = 0.0
+    return verdict, results, has_ambiguity
 
-        # 4. Apply Financial Mathematics (only if no failure yet)
-        if final_status == "APPROVED" and rule_status == "PASS":
-            if rule.deductible:
-                payout = max(0.0, payout - rule.deductible)
-            if rule.coverage_limit:
-                payout = min(payout, rule.coverage_limit)
 
-    return DecisionReport(
-        status=final_status,
-        reason=rejection_reason,
-        evaluations=evaluations,
-        eligible_payout=payout if final_status == "APPROVED" else 0.0
+def calculate_settlement(
+    claim_amount: float,
+    verdict: str,
+    deductible: float = 10000.0,
+    coverage_limit: float = 500000.0,
+) -> SettlementResult:
+    """Deterministic payout calculator: min(claim - deductible, coverage_limit)."""
+    if verdict != "APPROVED":
+        payout = 0.0
+    else:
+        payout = max(0.0, min(claim_amount - deductible, coverage_limit))
+
+    return SettlementResult(
+        claim_amount=claim_amount,
+        deductible=deductible,
+        coverage_limit=coverage_limit,
+        eligible_payout=payout,
     )

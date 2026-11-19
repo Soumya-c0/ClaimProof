@@ -1,19 +1,37 @@
+from typing import Any, List, Literal, Optional
 from pydantic import BaseModel, Field
-from typing import List, Optional, Literal, Union
 
-class Condition(BaseModel):
-    field: str = Field(description="The claim variable to check, e.g., 'days_since_policy_start', 'loss_type'")
-    operator: Literal[">", "<", ">=", "<=", "==", "!=", "in"] = Field(description="Mathematical or logical operator")
-    value: Union[int, float, str, List[str]] = Field(description="The value to evaluate against")
 
 class PolicyRule(BaseModel):
-    rule_id: str = Field(description="A unique uppercase identifier, e.g., 'WAIT_30D', 'FLOOD_COVERAGE'")
-    rule_type: Literal["coverage", "exclusion", "condition"] = Field(description="The nature of the rule")
-    description: str = Field(description="Human readable summary of the rule")
-    conditions: List[Condition] = Field(description="The logical conditions that trigger or satisfy this rule")
-    coverage_limit: Optional[float] = Field(None, description="Maximum payout if applicable")
-    deductible: Optional[float] = Field(None, description="Deductible to apply if applicable")
-    source_clause: str = Field(description="The exact clause reference from the text, e.g., 'Clause 4.7'")
+    rule_id: str
+    description: str
+    field: str
+    operator: Literal["==", "!=", ">", ">=", "<", "<=", "in", "not_in"]
+    value: Any
+    source_clause: str
+    rule_type: Literal["coverage", "waiting_period", "exclusion", "sublimit"]
+    linked_rules: List[str] = Field(default_factory=list)
+
+
+class RuleConflict(BaseModel):
+    rule_a: str
+    rule_b: str
+    reason: str
+    status: str = "needs_review"
+
+
+class GeneratedTestCase(BaseModel):
+    name: str
+    claim_input: dict
+    expected_outcome: Literal["approve", "reject", "needs_review"]
+    status: Literal["pass", "fail", "needs_review"] = "pass"
+
 
 class CompiledPolicy(BaseModel):
-    rules: List[PolicyRule] = Field(description="List of all extracted rules")
+    policy_id: str = "PLC-0001"
+    version: str = "v3"
+    pydantic_valid: bool = True
+    extracted_by: str = "LLM-extracted (LiteLLM + Ollama)"
+    rules: List[PolicyRule]
+    conflicts: List[RuleConflict] = Field(default_factory=list)
+    generated_tests: List[GeneratedTestCase] = Field(default_factory=list)

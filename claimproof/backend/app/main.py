@@ -1,14 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.upload import router as upload_router
-from app.api.compile import router as compile_router
-from app.api.decide import router as decide_router
+from app.api import compile, decide, prove, upload
 
-app = FastAPI(
-    title="ClaimProof API", 
-    description="Deterministic rule execution and AI policy compilation.",
-    version="1.0.0"
-)
+app = FastAPI(title="ClaimProof API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,11 +12,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include the document upload router
-app.include_router(upload_router)
-app.include_router(compile_router)
-app.include_router(decide_router)
+app.include_router(upload.router)
+app.include_router(compile.router)
+app.include_router(decide.router)
+app.include_router(prove.router)
+
 
 @app.get("/health")
-def health_check():
-    return {"status": "healthy", "service": "ClaimProof Core"}
+def health():
+    return {"status": "ok"}

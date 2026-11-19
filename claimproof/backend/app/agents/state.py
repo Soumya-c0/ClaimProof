@@ -1,13 +1,19 @@
-from typing import TypedDict, Literal
-from app.compiler.schema import CompiledPolicy
-from app.engine.schema import ClaimFacts
+from typing import Any, Dict, List, Optional, TypedDict
 
-class ClaimState(TypedDict):
-    policy: CompiledPolicy
-    claim: ClaimFacts
-    ambiguous_reason: str
-    advocate_argument: str
-    challenger_argument: str
-    judge_decision: str
-    confidence_score: float
-    final_status: Literal["APPROVED", "REJECTED", "ESCALATED", "PENDING"]
+
+class ClaimState(TypedDict, total=False):
+    claim_id: str
+    claim_tokens: str
+    facts: Dict[str, Any]
+    policy_version: str
+    rules: List[Any]
+    rule_results: List[Dict[str, Any]]
+    conflicts: List[str]
+    is_ambiguous: bool
+    arguments: Dict[str, str]  # {"advocate": ..., "challenger": ...}
+    verdict: str
+    confidence: float
+    settlement: Dict[str, Any]
+    counterfactual: Optional[Dict[str, Any]]
+    agents_triggered: bool
+    audit_hash: str

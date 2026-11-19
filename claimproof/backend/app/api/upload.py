@@ -1,34 +1,55 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
-import fitz  # PyMuPDF
-from app.privacy.anonymizer import protect_text
+import uuid
+import fitz  
+from fastapi import APIRouter, File, Form, UploadFile
+from typing import Optional
+from app.privacy.anonymizer import anonymize_text
+from app.privacy.vault import vault
 
-router = APIRouter(prefix="/documents", tags=["documents"])
+router = APIRouter(prefix="/protect", tags=["Protect"])
+
+
+def extract_text_from_pdf(file_bytes: bytes) -> str:
+    doc = fitz.open(stream=file_bytes, filetype="pdf")
+    return "\n".join(page.get_text() for page in doc)
+
+
+def extract_text_from_image(file_bytes: bytes) -> str:
+    from paddleocr import PaddleOCR
+    ocr = PaddleOCR(use_angle_cls=True, lang="en")
+    result = ocr.ocr(file_bytes, cls=True)
+    lines = [line[1][0] for block in (result or []) for line in (block or [])]
+    return "\n".join(lines)
+
 
 @router.post("/upload")
-async def upload_document(file: UploadFile = File(...)):
-    try:
-        file_bytes = await file.read()
-        raw_text = ""
-        
-        if file.filename.endswith(".pdf"):
-            # Extract text using PyMuPDF
-            pdf_document = fitz.open(stream=file_bytes, filetype="pdf")
-            for page_num in range(len(pdf_document)):
-                page = pdf_document.load_page(page_num)
-                raw_text += page.get_text("text") + "\n"
-        elif file.filename.endswith(".txt"):
-            # Handle plain text files for easy terminal testing
-            raw_text = file_bytes.decode('utf-8')
+async def protect_document(
+    file: Optional[UploadFile] = File(None),
+    raw_text: Optional[str] = Form(None),
+    doc_type: str = Form("claim"), 
+):
+    doc_id = str(uuid.uuid4())[:8]
+    extracted_text = raw_text or ""
+
+    if file:
+        content = await file.read()
+        filename = (file.filename or "").lower()
+        if filename.endswith(".pdf"):
+            extracted_text = extract_text_from_pdf(content)
+        elif filename.endswith((".png", ".jpg", ".jpeg")):
+            extracted_text = extract_text_from_image(content)
         else:
-            raise HTTPException(status_code=400, detail="Only PDF or TXT files are supported.")
-            
-        # Pass text through the Privacy Firewall
-        protected_text = protect_text(raw_text)
-        
-        return {
-            "filename": file.filename,
-            "status": "processed",
-            "protected_text": protected_text
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+            extracted_text = content.decode("utf-8", errors="ignore")
+
+    tokenized_text, token_map, privacy_check = anonymize_text(extracted_text)
+
+    vault.save_map(doc_id, token_map)
+
+    return {
+        "doc_id": doc_id,
+        "doc_type": doc_type,
+        "filename": file.filename if file else "raw_text.txt",
+        "status": "parsed",
+        "tokenized_text": tokenized_text,
+        "privacy_check": privacy_check,
+        "notice": "Only tokenised text reaches the LLM. Token map is stored locally.",
+    }

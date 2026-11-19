@@ -1,34 +1,27 @@
-from pydantic import BaseModel, Field
-from typing import Dict, Any, List, Literal
-from typing import Optional
-from app.compiler.schema import CompiledPolicy
+from typing import Any, Dict, List, Literal, Optional
+from pydantic import BaseModel
 
-class ClaimFacts(BaseModel):
-    facts: Dict[str, Any] = Field(description="Key-value pairs of extracted claim variables.")
-    claimed_amount: float = Field(description="The total monetary amount claimed.")
 
-class RuleEvaluation(BaseModel):
+class RuleEvalResult(BaseModel):
     rule_id: str
-    status: Literal["PASS", "FAIL", "AMBIGUOUS"]
+    clause: str
+    status: Literal["pass", "fail", "ambiguous"]
     reason: str
+    field: str
+    expected: Any
 
-class CounterfactualProof(BaseModel):
-    failed_rule_id: str
-    mutated_field: str
-    original_value: Any
-    required_value: Any
-    would_pass: bool
-    explanation: str
 
-class AuditTrail(BaseModel):
-    policy_hash: str
-    claim_hash: str
-    execution_hash: str
-
-class DecisionReport(BaseModel):
-    status: Literal["APPROVED", "REJECTED", "ESCALATED"]
-    reason: str
-    evaluations: List[RuleEvaluation]
+class SettlementResult(BaseModel):
+    claim_amount: float
+    deductible: float
+    coverage_limit: float
     eligible_payout: float
-    counterfactuals: List[CounterfactualProof] = []
-    audit: Optional[AuditTrail] = None
+
+
+class CounterfactualResult(BaseModel):
+    original_verdict: str
+    flipped_verdict: str
+    changed_field: str
+    original_value: Any
+    new_value: Any
+    explanation: str
