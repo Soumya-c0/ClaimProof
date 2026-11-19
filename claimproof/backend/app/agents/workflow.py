@@ -5,6 +5,7 @@ from app.agents.state import ClaimState
 from app.engine.evaluator import calculate_settlement, evaluate_rules
 from app.services.counterfactual import run_counterfactual
 from app.services.audit import record_audit_entry
+from app.services.retrieval import hybrid_retrieve
 
 def _ask_llm(role_prompt: str, context: str) -> str:
     resp = litellm.completion(
@@ -35,6 +36,8 @@ def route_after_evaluate(state: ClaimState) -> str:
 
 
 def advocate_node(state: ClaimState) -> ClaimState:
+    evidence = hybrid_retrieve(str(state["rule_results"]), top_k=3)
+    context = f"Rule Trace: {state['rule_results']}\nRetrieved Clauses: {evidence}"
     arg = _ask_llm(
         "You are the Advocate agent. Argue why this ambiguous insurance claim should be APPROVED.",
         str(state["rule_results"]),
@@ -45,6 +48,8 @@ def advocate_node(state: ClaimState) -> ClaimState:
 
 
 def challenger_node(state: ClaimState) -> ClaimState:
+    evidence = hybrid_retrieve(str(state["rule_results"]), top_k=3)
+    context = f"Rule Trace: {state['rule_results']}\nRetrieved Clauses: {evidence}"
     arg = _ask_llm(
         "You are the Challenger agent. Argue why this ambiguous insurance claim should be REJECTED.",
         str(state["rule_results"]),

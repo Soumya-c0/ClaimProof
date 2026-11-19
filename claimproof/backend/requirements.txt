@@ -13,3 +13,6 @@ litellm
 z3-solver
 pytest
 langgraph
+chromadb
+rank-bm25
+sentence-transformers
