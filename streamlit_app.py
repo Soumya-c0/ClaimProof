@@ -1,8 +1,3 @@
-"""ClaimProof: Streamlit demo.
-
-Runs the same backend modules as the FastAPI app, in "light" mode for small free hosts
-(small spaCy model, BM25-only retrieval). Sample data only.
-"""
 import json
 import os
 import random
@@ -185,7 +180,8 @@ with tab_decide:
     fields = list(dict.fromkeys(r.field for r in pol.rules))
     defaults = {"claim_type": "flood_damage", "days_since_policy_start": "20", "claim_amount": "150000"}
     cid = st.text_input("Claim ID", st.session_state.setdefault("cid_default", f"CLM-{random.randint(1000, 9999)}"))
-    st.caption("Leave a field empty to simulate a missing fact. That routes the claim to the LLM agents (needs GROQ_API_KEY).")
+    st.caption("Leave a field empty to simulate a missing fact.")
+    fields = fields or list(defaults.keys())
     cols = st.columns(len(fields))
     for col, f in zip(cols, fields):
         col.text_input(f, defaults.get(f, ""), key=f"fact_{f}")
