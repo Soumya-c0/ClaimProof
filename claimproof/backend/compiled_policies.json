@@ -1,0 +1,70 @@
+{
+  "policy_id": "PLC-0001",
+  "version": "v3",
+  "pydantic_valid": true,
+  "extracted_by": "LLM-extracted (LiteLLM + Ollama)",
+  "rules": [
+    {
+      "rule_id": "FLOOD_COVERAGE",
+      "description": "Flood damage to the insured vehicle is covered.",
+      "field": "claim_type",
+      "operator": "==",
+      "value": "flood_damage",
+      "source_clause": "Clause 4.2",
+      "rule_type": "coverage",
+      "linked_rules": [
+        "WAIT_30D"
+      ]
+    },
+    {
+      "rule_id": "WAIT_30D",
+      "description": "Flood claims are payable only if the loss occurs 30 or more days after the policy start date.",
+      "field": "days_since_policy_start",
+      "operator": ">=",
+      "value": 30,
+      "source_clause": "Clause 4.7",
+      "rule_type": "waiting_period",
+      "linked_rules": []
+    },
+    {
+      "rule_id": "MAX_LIMIT",
+      "description": "Maximum coverage is 150000.",
+      "field": "claim_amount",
+      "operator": "<=",
+      "value": 150000,
+      "source_clause": "Maximum coverage",
+      "rule_type": "sublimit",
+      "linked_rules": []
+    }
+  ],
+  "conflicts": [],
+  "generated_tests": [
+    {
+      "name": "Flood, filed Day 20, expect reject",
+      "claim_input": {
+        "claim_type": "flood_damage",
+        "days_since_policy_start": 20
+      },
+      "expected_outcome": "reject",
+      "status": "pass"
+    },
+    {
+      "name": "Flood, filed Day 35, expect approve",
+      "claim_input": {
+        "claim_type": "flood_damage",
+        "days_since_policy_start": 35
+      },
+      "expected_outcome": "approve",
+      "status": "pass"
+    },
+    {
+      "name": "Flood with Maximum coverage limit",
+      "claim_input": {
+        "claim_type": "flood_damage",
+        "claim_amount": 150000
+      },
+      "expected_outcome": "needs_review",
+      "status": "needs_review"
+    }
+  ]
+}

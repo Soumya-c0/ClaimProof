@@ -9,8 +9,7 @@ from app.services.retrieval import hybrid_retrieve
 
 def _ask_llm(role_prompt: str, context: str) -> str:
     resp = litellm.completion(
-        model="ollama/llama3",
-        api_base="http://localhost:11434",
+        model="groq/openai/gpt-oss-20b",
         temperature=0.0,
         messages=[
             {"role": "system", "content": role_prompt},

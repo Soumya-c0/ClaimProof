@@ -1,0 +1,684 @@
+[
+  {
+    "entry_id": 1,
+    "timestamp": "2026-11-20T08:01:57.608333+00:00",
+    "prev_hash": "GENESIS",
+    "hash": "9d5c91276382b3d8a694776c83d6036cf927384e9ec33a46e9f40c4e05063023",
+    "short_hash": "9d5c...023",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 2,
+    "timestamp": "2026-11-20T08:02:08.276554+00:00",
+    "prev_hash": "9d5c91276382b3d8a694776c83d6036cf927384e9ec33a46e9f40c4e05063023",
+    "hash": "8d586a637af9f6f37da1ae808410abab5d67d6421be0586d4e4dae1ee9330380",
+    "short_hash": "8d58...380",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 3,
+    "timestamp": "2026-11-20T08:02:11.827829+00:00",
+    "prev_hash": "8d586a637af9f6f37da1ae808410abab5d67d6421be0586d4e4dae1ee9330380",
+    "hash": "ed66a5baf210673ea80034b9effc556aaa7779df1ec23972f6e22d421aac0090",
+    "short_hash": "ed66...090",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 4,
+    "timestamp": "2026-11-20T08:02:13.628478+00:00",
+    "prev_hash": "ed66a5baf210673ea80034b9effc556aaa7779df1ec23972f6e22d421aac0090",
+    "hash": "d353e429063f51bcaa8542a8f602c756f2c1aa1d33b962bea2ee4fe310760ea7",
+    "short_hash": "d353...ea7",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 5,
+    "timestamp": "2026-11-20T08:02:14.696667+00:00",
+    "prev_hash": "d353e429063f51bcaa8542a8f602c756f2c1aa1d33b962bea2ee4fe310760ea7",
+    "hash": "973ad9b2bf6e597b5ec2e1a6cefe044b7a0c94f7091babc87f60164067367220",
+    "short_hash": "973a...220",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 6,
+    "timestamp": "2026-11-20T08:02:16.050990+00:00",
+    "prev_hash": "973ad9b2bf6e597b5ec2e1a6cefe044b7a0c94f7091babc87f60164067367220",
+    "hash": "5d6f02f60aca0ddc4e84732c046853e6850d370a7990cfd0492ee43bc541d0c6",
+    "short_hash": "5d6f...0c6",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 7,
+    "timestamp": "2026-11-20T08:02:17.257391+00:00",
+    "prev_hash": "5d6f02f60aca0ddc4e84732c046853e6850d370a7990cfd0492ee43bc541d0c6",
+    "hash": "51a654e028ff5271e2dd9a9f13e8c76c81b6c4cab00524e0002cc2cd698774f0",
+    "short_hash": "51a6...4f0",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 8,
+    "timestamp": "2026-11-20T08:02:29.968706+00:00",
+    "prev_hash": "51a654e028ff5271e2dd9a9f13e8c76c81b6c4cab00524e0002cc2cd698774f0",
+    "hash": "3b0cce6d8982a16b3bb642fbe9e1798f9c14346b69f4c9dc3807596a5669b5b5",
+    "short_hash": "3b0c...5b5",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "APPROVED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 9,
+    "timestamp": "2026-11-20T08:02:38.890234+00:00",
+    "prev_hash": "3b0cce6d8982a16b3bb642fbe9e1798f9c14346b69f4c9dc3807596a5669b5b5",
+    "hash": "ad82ee953e7a92169406ae872e48caaa90bbc5e66eeaa81d073094f8c4527b4a",
+    "short_hash": "ad82...b4a",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 10,
+    "timestamp": "2026-11-20T08:04:05.772940+00:00",
+    "prev_hash": "ad82ee953e7a92169406ae872e48caaa90bbc5e66eeaa81d073094f8c4527b4a",
+    "hash": "5099329aa1fe4fae74fc23482e0acb5f098929c171b7766820a315d709cc1b41",
+    "short_hash": "5099...b41",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage is 150000."
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 11,
+    "timestamp": "2026-11-20T08:06:44.762035+00:00",
+    "prev_hash": "5099329aa1fe4fae74fc23482e0acb5f098929c171b7766820a315d709cc1b41",
+    "hash": "582ad3cf353f4fa90b26db378757211bf72f4b3d652ed37744c6f2fe1b6d16c9",
+    "short_hash": "582a...6c9",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 12,
+    "timestamp": "2026-11-20T08:08:15.957191+00:00",
+    "prev_hash": "582ad3cf353f4fa90b26db378757211bf72f4b3d652ed37744c6f2fe1b6d16c9",
+    "hash": "8b6561444f00df19d76b3beacfe18c2a9366ccaff9cbc08ac74d0505906ead75",
+    "short_hash": "8b65...d75",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 13,
+    "timestamp": "2026-11-20T08:11:04.702593+00:00",
+    "prev_hash": "8b6561444f00df19d76b3beacfe18c2a9366ccaff9cbc08ac74d0505906ead75",
+    "hash": "ef7849221e82cc3616f18c594458dd41d31390b19d27fa5ea2a45efe623f67b3",
+    "short_hash": "ef78...7b3",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 14,
+    "timestamp": "2026-11-20T08:11:15.869932+00:00",
+    "prev_hash": "ef7849221e82cc3616f18c594458dd41d31390b19d27fa5ea2a45efe623f67b3",
+    "hash": "9ee605ecd33902a5b47fd1d65f5d8da35a14bf8534032a5643ff9445079ad804",
+    "short_hash": "9ee6...804",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 0.85,
+    "verified": true
+  },
+  {
+    "entry_id": 15,
+    "timestamp": "2026-11-20T08:11:36.641925+00:00",
+    "prev_hash": "9ee605ecd33902a5b47fd1d65f5d8da35a14bf8534032a5643ff9445079ad804",
+    "hash": "33f3e1c118edb3a8358dd196c1e535097533518f6cab20c3ca32dfd06272433b",
+    "short_hash": "33f3...33b",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 16,
+    "timestamp": "2026-11-20T08:11:39.578292+00:00",
+    "prev_hash": "33f3e1c118edb3a8358dd196c1e535097533518f6cab20c3ca32dfd06272433b",
+    "hash": "757fed6f792490deb913e70f185c1cc58be338cfbcac7159ff8bab8c96553a2d",
+    "short_hash": "757f...a2d",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 17,
+    "timestamp": "2026-11-20T08:11:42.552473+00:00",
+    "prev_hash": "757fed6f792490deb913e70f185c1cc58be338cfbcac7159ff8bab8c96553a2d",
+    "hash": "7a7c722933b744c1879774ea203f080c4c7028a0c35f161349b89f972ab45175",
+    "short_hash": "7a7c...175",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 18,
+    "timestamp": "2026-11-20T08:11:43.439104+00:00",
+    "prev_hash": "7a7c722933b744c1879774ea203f080c4c7028a0c35f161349b89f972ab45175",
+    "hash": "2c9266ce63aafa5b2f8fd479a7cc9059b9a641d96789a86ccf7abb6fe83e9634",
+    "short_hash": "2c92...634",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 19,
+    "timestamp": "2026-11-20T08:12:30.113603+00:00",
+    "prev_hash": "2c9266ce63aafa5b2f8fd479a7cc9059b9a641d96789a86ccf7abb6fe83e9634",
+    "hash": "04aa6cff5e2f495d648d5c9fe25df17d5a02b0fdc805bc9d81b33c297f5c4ef9",
+    "short_hash": "04aa...ef9",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 20,
+    "timestamp": "2026-11-20T08:12:31.733286+00:00",
+    "prev_hash": "04aa6cff5e2f495d648d5c9fe25df17d5a02b0fdc805bc9d81b33c297f5c4ef9",
+    "hash": "9d19aa6ce9618cb63f83fba57173b8da2ca2e3c11e15d1ecea4e0854bfd66464",
+    "short_hash": "9d19...464",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 21,
+    "timestamp": "2026-11-20T08:12:36.550294+00:00",
+    "prev_hash": "9d19aa6ce9618cb63f83fba57173b8da2ca2e3c11e15d1ecea4e0854bfd66464",
+    "hash": "7e4d0f51c0e10d634e19daada32685cbd9fc47b65dbfeeedfb032e9f31c875e9",
+    "short_hash": "7e4d...5e9",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 22,
+    "timestamp": "2026-11-20T08:12:37.609278+00:00",
+    "prev_hash": "7e4d0f51c0e10d634e19daada32685cbd9fc47b65dbfeeedfb032e9f31c875e9",
+    "hash": "cd7bdff6cff4eaa48ccdf442257e43b5bdfc6609508a5cfe0f16b412a3e47b1d",
+    "short_hash": "cd7b...b1d",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 23,
+    "timestamp": "2026-11-20T08:12:42.066661+00:00",
+    "prev_hash": "cd7bdff6cff4eaa48ccdf442257e43b5bdfc6609508a5cfe0f16b412a3e47b1d",
+    "hash": "3caad062872d53b0393daf869ba50603112c3f26a3a77751596c4bdeb077542a",
+    "short_hash": "3caa...42a",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 24,
+    "timestamp": "2026-11-20T08:12:43.187244+00:00",
+    "prev_hash": "3caad062872d53b0393daf869ba50603112c3f26a3a77751596c4bdeb077542a",
+    "hash": "543a251fcdfc7e6bf7f60e874b6c974480170b13d83f22ab8f09a4c57287a589",
+    "short_hash": "543a...589",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 25,
+    "timestamp": "2026-11-20T08:12:50.801054+00:00",
+    "prev_hash": "543a251fcdfc7e6bf7f60e874b6c974480170b13d83f22ab8f09a4c57287a589",
+    "hash": "66da492bcfefa2b2c479aa4d78dfb581609e4daab32a08fcb67d16e910671e89",
+    "short_hash": "66da...e89",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 26,
+    "timestamp": "2026-11-20T08:12:55.246461+00:00",
+    "prev_hash": "66da492bcfefa2b2c479aa4d78dfb581609e4daab32a08fcb67d16e910671e89",
+    "hash": "badac002a509a9f45ebe6fefc022aa7b6f7b386b58e83d9c2ef3918331e3b144",
+    "short_hash": "bada...144",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "APPROVED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 27,
+    "timestamp": "2026-11-20T08:13:18.803864+00:00",
+    "prev_hash": "badac002a509a9f45ebe6fefc022aa7b6f7b386b58e83d9c2ef3918331e3b144",
+    "hash": "c845a4d43e212ee6f0414b2b7853bbc404f737fdeac99c0e7c4f3e8f3bfff91c",
+    "short_hash": "c845...91c",
+    "claim_id": "CLM-1043",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 0.85,
+    "verified": true
+  },
+  {
+    "entry_id": 28,
+    "timestamp": "2026-11-20T08:25:28.653540+00:00",
+    "prev_hash": "c845a4d43e212ee6f0414b2b7853bbc404f737fdeac99c0e7c4f3e8f3bfff91c",
+    "hash": "3e3382da0f66d91e5e2bb5aed92479314af29c2d73e1c60f8726f0f0483f3334",
+    "short_hash": "3e33...334",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 29,
+    "timestamp": "2026-11-20T08:25:46.245687+00:00",
+    "prev_hash": "3e3382da0f66d91e5e2bb5aed92479314af29c2d73e1c60f8726f0f0483f3334",
+    "hash": "0f54489e728b6d9609b28648b34a54d421386e23707a22a040b1ad0e9bee95de",
+    "short_hash": "0f54...5de",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 0.85,
+    "verified": true
+  },
+  {
+    "entry_id": 30,
+    "timestamp": "2026-11-20T08:27:06.728736+00:00",
+    "prev_hash": "0f54489e728b6d9609b28648b34a54d421386e23707a22a040b1ad0e9bee95de",
+    "hash": "e11cf66ed7ccec30487b5367caaef434be99b521d3381501a8c4e7c7b7f282fe",
+    "short_hash": "e11c...2fe",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 1.0,
+    "verified": true
+  },
+  {
+    "entry_id": 31,
+    "timestamp": "2026-11-20T08:27:14.165577+00:00",
+    "prev_hash": "e11cf66ed7ccec30487b5367caaef434be99b521d3381501a8c4e7c7b7f282fe",
+    "hash": "4c005b5ab794c61b2f21b86b0ba0441576b6893fea19cfff8341f3cd55475b3e",
+    "short_hash": "4c00...b3e",
+    "claim_id": "CLM-1042",
+    "policy_version": "v3",
+    "verdict": "REJECTED",
+    "rule_ids": [
+      "FLOOD_COVERAGE",
+      "WAIT_30D",
+      "MAX_LIMIT"
+    ],
+    "clauses": [
+      "Clause 4.2",
+      "Clause 4.7",
+      "Maximum coverage"
+    ],
+    "confidence": 0.85,
+    "verified": true
+  }
+]
