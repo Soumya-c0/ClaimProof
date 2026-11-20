@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import compile, decide, prove, upload
+import os
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="ClaimProof API", version="1.0.0")
 
@@ -21,3 +23,6 @@ app.include_router(prove.router)
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+if os.path.isdir("static"):
+    app.mount("/", StaticFiles(directory="static", html=True), name="web")

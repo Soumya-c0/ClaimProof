@@ -26,4 +26,4 @@ frontend/dist/
 .env.local
 
 # OS Files
-.DS_Store
+.DS_Storeclaimproof/backend/local_token_vault.json
