@@ -2,7 +2,7 @@
   "policy_id": "PLC-0001",
   "version": "v3",
   "pydantic_valid": true,
-  "extracted_by": "LLM-extracted (LiteLLM + Ollama)",
+  "extracted_by": "LLM-extracted (LiteLLM + Groq)",
   "rules": [
     {
       "rule_id": "FLOOD_COVERAGE",
@@ -43,7 +43,8 @@
       "name": "Flood, filed Day 20, expect reject",
       "claim_input": {
         "claim_type": "flood_damage",
-        "days_since_policy_start": 20
+        "days_since_policy_start": 20,
+        "claim_amount": 150000
       },
       "expected_outcome": "reject",
       "status": "pass"
@@ -52,19 +53,31 @@
       "name": "Flood, filed Day 35, expect approve",
       "claim_input": {
         "claim_type": "flood_damage",
-        "days_since_policy_start": 35
+        "days_since_policy_start": 35,
+        "claim_amount": 150000
       },
       "expected_outcome": "approve",
       "status": "pass"
     },
     {
-      "name": "Flood with Maximum coverage limit",
+      "name": "Claim at Maximum coverage limit, expect approve",
       "claim_input": {
         "claim_type": "flood_damage",
+        "days_since_policy_start": 30,
         "claim_amount": 150000
       },
-      "expected_outcome": "needs_review",
-      "status": "needs_review"
+      "expected_outcome": "approve",
+      "status": "pass"
+    },
+    {
+      "name": "Claim above Maximum coverage limit, expect reject",
+      "claim_input": {
+        "claim_type": "flood_damage",
+        "days_since_policy_start": 30,
+        "claim_amount": 150001
+      },
+      "expected_outcome": "reject",
+      "status": "pass"
     }
   ]
 }

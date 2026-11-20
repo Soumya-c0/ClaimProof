@@ -31,7 +31,7 @@ class CompiledPolicy(BaseModel):
     policy_id: str = "PLC-0001"
     version: str = "v3"
     pydantic_valid: bool = True
-    extracted_by: str = "LLM-extracted (LiteLLM + Ollama)"
+    extracted_by: str = "LLM-extracted (LiteLLM + Groq)"
     rules: List[PolicyRule]
     conflicts: List[RuleConflict] = Field(default_factory=list)
     generated_tests: List[GeneratedTestCase] = Field(default_factory=list)

@@ -40,7 +40,7 @@ async def protect_document(
         else:
             extracted_text = content.decode("utf-8", errors="ignore")
 
-    tokenized_text, token_map, privacy_check = anonymize_text(extracted_text)
+    tokenized_text, token_map, privacy_check = anonymize_text(extracted_text, doc_type)
 
     vault.save_map(doc_id, token_map)
 
