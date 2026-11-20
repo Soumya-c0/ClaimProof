@@ -66,7 +66,6 @@ def parse_value(v: str):
 st.title("ClaimProof")
 st.caption(
     "Policy compilation and evidence-based claim assessment. "
-    "Demo with sample data only: please do not upload real personal documents."
 )
 
 with st.sidebar:
@@ -211,8 +210,6 @@ with tab_decide:
             b.metric("Deductible", f"{s['deductible']:,.0f}")
             c.metric("Eligible payout", f"{s['eligible_payout']:,.0f}")
         cf = res.get("counterfactual")
-        if cf:
-            st.info("What would change the outcome: " + cf["explanation"])
         if res.get("agents_triggered"):
             for who, arg in res.get("arguments", {}).items():
                 with st.expander(f"{who.title()} argument"):

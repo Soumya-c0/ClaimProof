@@ -1,0 +1,29 @@
+APEX SHIELD GENERAL INSURANCE CO. LTD.
+MOTOR INSURANCE CLAIM SUBMISSION FORM
+
+Claim Reference ID: CLM-1043
+Date of Filing: 05 November 2026
+Policy Number: PLC-0001 (Version v3)
+Policy Inception Date: 01 October 2026
+
+1. CLAIMANT & INSURED DETAILS
+Claimant Full Name: Rahul Verma
+Contact Phone: +91 98765 43210
+Email Address: rahul.verma89@example.com
+Residential Address: Flat 402, Lakeview Residency, Road No. 12, Banjara Hills, Hyderabad, Telangana 500034
+Government ID (PAN): ABCDE1234F
+Vehicle Registration: TS 09 EX 4821
+
+2. INCIDENT & LOSS SUMMARY
+Loss Type: Flood damage (flood_damage)
+Date of Incident: Unconfirmed (vehicle remained parked during outstation travel from 18 October 2026 to 03 November 2026; exact date of water ingress could not be verified by the workshop)
+Location of Incident: Open Parking Lot, Kondapur, Hyderabad, Telangana 500084
+Incident Description: Insured returned from travel on 03 November 2026 and discovered standing water damage inside the cabin and corroded underbody electricals. Heavy rain events occurred both before and after the 30-day waiting threshold, and neither CCTV nor workshop logs confirm the exact date of loss.
+
+3. REPAIR ESTIMATE & CLAIMED AMOUNT
+Workshop Name: Deccan Hyundai Authorized Service Center, Kothaguda, Hyderabad
+Service Advisor: Suresh Reddy (+91 90001 55432)
+Total Claimed Amount: INR 150000
+
+Claimant Signature: Rahul Verma
+Date: 05 November 2026

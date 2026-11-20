@@ -1,0 +1,25 @@
+APEX SHIELD GENERAL INSURANCE CO. LTD.
+COMPREHENSIVE PRIVATE CAR MOTOR INSURANCE POLICY — VERSION v3
+
+Policy Number: PLC-0001
+Policy Version: v3 (Effective 10 March 2026)
+Insured Name: Rahul Verma
+Registered Mobile: +91 98765 43210
+Email Address: rahul.verma89@example.com
+Residential Address: Flat 402, Lakeview Residency, Road No. 12, Banjara Hills, Hyderabad, Telangana 500034
+PAN Number: ABCDE1234F
+Vehicle Registration: TS 09 EX 4821 (Hyundai Creta SX, 2024 Model)
+Policy Period: 01 October 2026 to 30 September 2027 (Midnight)
+Underwriting Officer: Meera Deshmukh (+91 98490 11223)
+
+SECTION 4: NATURAL CALAMITY & FLOOD COVERAGE
+Clause 4.2 (Flood Coverage): Flood damage to the insured vehicle resulting from heavy rainfall, waterlogging, or flash flooding is covered under this policy (claim_type: flood_damage).
+Clause 4.7 (Waiting Period): Flood damage claims are payable only if the loss occurs 30 or more days after the policy start date (days_since_policy_start >= 30). Any flood loss occurring within the first 29 days of policy inception is excluded.
+
+SECTION 5: LIMITS, DEDUCTIBLES & SETTLEMENT
+Clause 5.1 (Maximum Coverage Limit): The maximum coverage limit payable for any single flood damage claim under this policy is INR 150000 (claim_amount <= 150000).
+Clause 5.2 (Compulsory Deductible): A standard deductible of INR 10000 applies to every approved flood damage claim prior to final settlement.
+Clause 5.3 (Documentation): All claims must be accompanied by an authorized service center repair estimate and proof of incident date.
+
+Authorized Signatory: Arvind Nair, Head of Motor Underwriting
+Issued at: Hyderabad Regional Office, 01 October 2026
